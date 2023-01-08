@@ -87,13 +87,18 @@ async function run(){
   })
 
   
-
+//addporduct api below
   app.post('/addProduct', async(req,res)=>{
     const product = req.body;
     console.log(product)
     const result = await AddProductCollection.insertOne(product)
     res.send(result)
   })
+
+//myporduct page api below
+app.get('/myProduct',async(req,res)=>{
+  
+})
 
 }
 run().catch(error=> console.log(error))
