@@ -97,6 +97,8 @@ async function run(){
 
 //myporduct page api below
 app.get('/myProduct',async(req,res)=>{
+  const query ={};
+  const result = await AddProductCollection.find(query).toArray()
   
 })
 
