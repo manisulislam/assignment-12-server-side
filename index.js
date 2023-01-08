@@ -99,6 +99,7 @@ async function run(){
 app.get('/myProduct',async(req,res)=>{
   const query ={};
   const result = await AddProductCollection.find(query).toArray()
+  res.send(result)
   
 })
 
