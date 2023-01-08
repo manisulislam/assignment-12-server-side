@@ -28,6 +28,7 @@ async function run(){
   const AddProductCollection = client.db('watchesResaleMarket').collection('AddProduct')
   const UsersCollection = client.db('watchesResaleMarket').collection('users')
   const categoryCollection = client.db('watchesResaleMarket').collection('category')
+  const AdvertiseCollection = client.db('watchesResaleMarket').collection('advertise')
   app.get('/WatchCategory', async(req,res)=>{
     const category_id = req.query.category_id
     console.log(JSON.stringify(category_id))
@@ -111,6 +112,14 @@ app.delete('/myProduct/:id', async(req,res)=>{
   const result = await AddProductCollection.deleteMany(query)
   res.send(result)
   console.log(id)
+})
+
+//advertise product post api 
+app.post('/advertiseProducts', async(req,res)=>{
+  const advertiseProduct = req.body;
+  const result = await AdvertiseCollection.insertOne(advertiseProduct)
+  console.log(result)
+  res.send(result)
 })
 
 }
