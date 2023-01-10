@@ -29,14 +29,34 @@ async function run(){
   const UsersCollection = client.db('watchesResaleMarket').collection('users')
   const categoryCollection = client.db('watchesResaleMarket').collection('category')
   const AdvertiseCollection = client.db('watchesResaleMarket').collection('advertise')
-  app.get('/WatchCategory', async(req,res)=>{
-    const category_id = req.query.category_id
-    console.log(JSON.stringify(category_id))
+  app.get('/WatchCategory/:id', async(req,res)=>{
+    const id = req.params.id
+    console.log(id)
+    const categoryInfo = await WatchesCategoryCollection.filter(n=>n.category_id==id).toArray()
+    res.send(categoryInfo)
+
     
-    const query = {category_id: category_id }
-    const result = await WatchesCategoryCollection.find(query).toArray()
-    console.log(result)
-    res.send(result)
+    // const query = {category_id: category_id }
+    // const result = await WatchesCategoryCollection.find(query).toArray()
+    // console.log(result)
+    // res.send(result)
+  })
+
+
+  //admin user role check api
+  app.get('/user/admin/:email', async(req,res)=>{
+    const email = req.params.email;
+    const query = {email}
+    const user = UsersCollection.findOne(query);
+    res.send({isAdmin: user?.role =='admin' })
+  })
+
+
+  app.get('/user/sellers/:email', async(req,res)=>{
+    const email = req.params.email;
+    const query= {email};
+    const user = await UsersCollection.findOne(query);
+    res.send({isSeller: user?.role=='SELLERS'})
   })
 
   app.get('/users', async(req,res)=>{
@@ -119,6 +139,13 @@ app.post('/advertiseProducts', async(req,res)=>{
   const advertiseProduct = req.body;
   const result = await AdvertiseCollection.insertOne(advertiseProduct)
   console.log(result)
+  res.send(result)
+})
+
+//advertise product get api started
+app.get('/advertiseProducts', async(req, res)=>{
+  const query = {};
+  const result = await AdvertiseCollection.find(query).toArray()
   res.send(result)
 })
 
